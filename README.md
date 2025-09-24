@@ -1,3 +1,31 @@
+# Classic L1J - Development Fork (Crimson Empire)
+
+This repository is a **development fork** of the official [l1j-en/classic](https://github.com/l1j-en/classic) project.  
+The original source of truth remains the upstream repository (`l1j-en/classic`), and all work done here is intended to be contributed **back to the main project via pull requests**.
+
+The primary development branch in this fork is **`crimsonempire`**.
+
+## Purpose
+
+The goal of this fork is to support ongoing development by:
+
+- Fixing bugs and improving stability.
+- Implementing new gameplay features and systems.
+- Refactoring and modernizing legacy code where beneficial.
+- Preparing contributions that can be merged back into the official `l1j-en` project.
+
+All changes made here are developed with **upstream compatibility** in mind.
+
+## Branch Structure
+
+- `master` – mirrors the original upstream `l1j-en/master` branch.
+- `crimsonempire` – main development branch for ongoing improvements.
+- `feature/*` – feature-specific branches based on `crimsonempire` (e.g. `feature/empty-castle-war-auto`).
+
+
+---
+
+# Original Readme (classic)
 # l1j-en
 
 l1j-en is an English-language server emulator for the South Korean MMORPG,
