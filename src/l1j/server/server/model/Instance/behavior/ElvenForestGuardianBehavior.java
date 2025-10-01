@@ -20,7 +20,6 @@ package l1j.server.server.model.Instance.behavior;
 
 import l1j.server.server.model.Instance.L1GuardianInstance;
 import l1j.server.server.model.Instance.L1PcInstance;
-import l1j.server.server.serverpackets.S_ServerMessage;
 
 public interface ElvenForestGuardianBehavior {
     /**

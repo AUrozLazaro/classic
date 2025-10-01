@@ -22,8 +22,6 @@ import static l1j.server.server.model.skill.L1SkillId.FOG_OF_SLEEPING;
 
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadLocalRandom;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +39,6 @@ import l1j.server.server.serverpackets.S_ChangeHeading;
 import l1j.server.server.serverpackets.S_DoActionGFX;
 import l1j.server.server.serverpackets.S_NPCTalkReturn;
 import l1j.server.server.serverpackets.S_NpcChatPacket;
-import l1j.server.server.serverpackets.S_ServerMessage;
 import l1j.server.server.templates.L1Npc;
 import l1j.server.server.utils.CalcExp;
 import l1j.server.server.model.Instance.behavior.ElvenForestGuardianBehavior;
@@ -61,13 +58,13 @@ public class L1GuardianInstance extends L1NpcInstance {
 
 	private ScheduledFuture<?> _monitorFuture;
 
-    private ElvenForestGuardianBehavior elvenGuardianBehavior;
+    private ElvenForestGuardianBehavior _elvenGuardianBehavior;
     /**
 	 * @param template
 	 */
 	public L1GuardianInstance(L1Npc template) {
 		super(template);
-        this.elvenGuardianBehavior = ElvenForestGuardianBehaviorFactory.create(template.get_npcId());
+        _elvenGuardianBehavior = ElvenForestGuardianBehaviorFactory.create(template.get_npcId());
 	}
 
 	@Override
@@ -121,7 +118,7 @@ public class L1GuardianInstance extends L1NpcInstance {
         L1Attack attack = new L1Attack(player, this);
         if (attack.calcHit()) {
             if (canTriggerElvenGuardianBehavior(player)) {
-                elvenGuardianBehavior.onHit(this, player);
+                _elvenGuardianBehavior.onHit(this, player);
             }
 
             attack.calcDamage();
@@ -211,7 +208,7 @@ public class L1GuardianInstance extends L1NpcInstance {
 	public void receiveDamage(L1Character attacker, int damage) {
 		if (attacker instanceof L1PcInstance && damage > 0) {
 			L1PcInstance pc = (L1PcInstance) attacker;
-			if (pc.getType() == 2 && pc.getCurrentWeapon() == 0) {
+			if (pc.isElf() && pc.getCurrentWeapon() == 0) {
 			} else {
 				if (getCurrentHp() > 0 && !isDead()) {
 					if (damage >= 0) {
@@ -351,10 +348,9 @@ public class L1GuardianInstance extends L1NpcInstance {
 	}
 
     private boolean canTriggerElvenGuardianBehavior(L1PcInstance player) {
-        return player.getType() == 2
+        return player.isElf()
                 && player.getCurrentWeapon() == 0
-                && player.isElf()
-                && elvenGuardianBehavior != null;
+                && _elvenGuardianBehavior != null;
     }
 
     /**
