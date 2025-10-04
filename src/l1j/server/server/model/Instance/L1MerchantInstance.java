@@ -328,6 +328,7 @@ public class L1MerchantInstance extends L1NpcInstance {
 					}
 				}
 			} else if (npcid == 70775) {
+				// Lv30 Knight Quest / Mark
 				if (player.isKnight()) {
 					if (player.getLevel() >= 30) {
 						if (quest.isEnd(L1Quest.QUEST_LEVEL15)) {
@@ -340,6 +341,8 @@ public class L1MerchantInstance extends L1NpcInstance {
 							}
 						}
 					}
+				} else {
+					htmlid = "mark3";
 				}
 			} else if (npcid == 70794) {
 				if (player.isCrown()) {
