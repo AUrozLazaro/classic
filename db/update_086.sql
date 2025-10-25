@@ -131,5 +131,19 @@ INSERT INTO `quest_drops` VALUES ('40611', 'E');
 INSERT INTO `quest_drops` VALUES ('40612', 'E');
 -- Neruga Spellbook
 INSERT INTO `quest_drops` VALUES ('40610', 'E');
- -- Skeleton Skull
+-- Skeleton Skull
 INSERT INTO `quest_drops` VALUES ('41229', 'W');
+
+-- Deleting duplicated Talking Scroll quest NPCs (Serian in TI and Lekman in SKT: both are in SI and HV)
+-- To have them you need to set the flag in altsettings.TalkingScrollQuest to True, allegedly this was only active in
+-- the Lands of Aden server US ruleset, so by default is False (Depardieu/Ken Rauhel).
+DELETE FROM `spawnlist_npc` WHERE id = 87557 AND location = 'Serian';
+DELETE FROM `spawnlist_npc` WHERE id = 140887 AND location = 'Lekman';
+
+-- Restoring original position of Serian, it was previously modified to be more easy to find but the original position
+-- is close to the Quest NPC Ruba. Lekman in HV is also a bit separated from the starting point and was left untouched.
+-- Both have the design to reward the player if they do exploration.
+UPDATE `spawnlist_npc` SET locx = 32788, locy = 32785 WHERE id = 87546 AND location = 'Serian';
+
+-- Fixing bug where Zeno (Teleporter from TI to SI) wasn't appearing if altsettings.TalkingScrollQuest was True
+UPDATE `spawnlist_npc` SET count = 1 WHERE id = 50059 AND location = 'Zeno';
