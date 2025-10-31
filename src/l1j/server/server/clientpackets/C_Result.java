@@ -28,6 +28,7 @@ import l1j.server.Config;
 import l1j.server.server.Account;
 import l1j.server.server.datatables.IpTable;
 import l1j.server.server.datatables.ShopTable;
+import l1j.server.server.log.LogDwarfIn;
 import l1j.server.server.log.LogDwarfOut;
 import l1j.server.server.log.LogElfDwarfIn;
 import l1j.server.server.log.LogElfDwarfOut;
@@ -154,9 +155,8 @@ public class C_Result extends ClientBasePacket {
 				count = readD();
 				L1Object object = pc.getInventory().getItem(objectId);
 				L1ItemInstance item = (L1ItemInstance) object;
-				//unused
-				//int item_count_before = item.getCount();
-				//int item_count_after = 0;
+				int item_count_before = item.getCount();
+				int item_count_after = 0;
 				if (!item.getItem().isTradable()) {
 					tradable = false;
 					pc.sendPackets(new S_ServerMessage(210, item.getItem()
@@ -201,14 +201,15 @@ public class C_Result extends ClientBasePacket {
 					pc.getInventory().tradeItem(objectId, count,
 							pc.getDwarfInventory());
 					pc.turnOnOffLight();
-					L1ItemInstance pcitem = pc.getInventory().getItem(objectId);
-					if (pcitem != null) {
-						//unused
-						//item_count_after = pcitem.getCount();
-					}
-					// LogDwarfIn ldi = new LogDwarfIn();
-					// ldi.storeLogDwarfIn(pc, item, item_count_before,
-					// item_count_after, count);
+                    if (Config.LOGGING_ITEMS) {
+                        L1ItemInstance pcitem = pc.getInventory().getItem(objectId);
+                        if (pcitem != null) {
+                            item_count_after = pcitem.getCount();
+                        }
+                        LogDwarfIn ldi = new LogDwarfIn();
+                        ldi.storeLogDwarfIn(pc, item, item_count_before,
+                                item_count_after, count);
+                    }
 				}
 			}
 			pc.saveInventory();
@@ -233,14 +234,16 @@ public class C_Result extends ClientBasePacket {
 					if (pc.getInventory().consumeItem(L1ItemId.ADENA, 30)) {
 						pc.getDwarfInventory().tradeItem(item, count,
 								pc.getInventory());
-						L1ItemInstance dwitem = pc.getDwarfInventory().getItem(
-								objectId);
-						if (dwitem != null) {
-							item_count_after = dwitem.getCount();
-						}
-						LogDwarfOut ldo = new LogDwarfOut();
-						ldo.storeLogDwarfOut(pc, item, item_count_before,
-								item_count_after, count);
+                        if (Config.LOGGING_ITEMS) {
+                            L1ItemInstance dwitem = pc.getDwarfInventory().getItem(
+                                    objectId);
+                            if (dwitem != null) {
+                                item_count_after = dwitem.getCount();
+                            }
+                            LogDwarfOut ldo = new LogDwarfOut();
+                            ldo.storeLogDwarfOut(pc, item, item_count_before,
+                                    item_count_after, count);
+                        }
 					} else {
 						pc.sendPackets(new S_ServerMessage(189));
 						break;
@@ -445,13 +448,15 @@ public class C_Result extends ClientBasePacket {
 					pc.getInventory().tradeItem(objectId, count,
 							pc.getDwarfForElfInventory());
 					pc.turnOnOffLight();
-					L1ItemInstance pcitem = pc.getInventory().getItem(objectId);
-					if (pcitem != null) {
-						item_count_after = pcitem.getCount();
-					}
-					LogElfDwarfIn ledi = new LogElfDwarfIn();
-					ledi.storeLogElfDwarfIn(pc, item, item_count_before,
-							item_count_after, count);
+                    if (Config.LOGGING_ITEMS) {
+                        L1ItemInstance pcitem = pc.getInventory().getItem(objectId);
+                        if (pcitem != null) {
+                            item_count_after = pcitem.getCount();
+                        }
+                        LogElfDwarfIn ledi = new LogElfDwarfIn();
+                        ledi.storeLogElfDwarfIn(pc, item, item_count_before,
+                                item_count_after, count);
+                    }
 				}
 				pc.saveInventory();
 			}
@@ -478,14 +483,16 @@ public class C_Result extends ClientBasePacket {
 					if (pc.getInventory().consumeItem(40494, 2)) {
 						pc.getDwarfForElfInventory().tradeItem(item, count,
 								pc.getInventory());
-						L1ItemInstance pcitem = pc.getDwarfForElfInventory()
-								.getItem(objectId);
-						if (pcitem != null) {
-							item_count_after = pcitem.getCount();
-						}
-						LogElfDwarfOut ledo = new LogElfDwarfOut();
-						ledo.storeLogElfDwarfOut(pc, item, item_count_before,
-								item_count_after, count);
+                        if (Config.LOGGING_ITEMS) {
+                            L1ItemInstance pcitem = pc.getDwarfForElfInventory()
+                                    .getItem(objectId);
+                            if (pcitem != null) {
+                                item_count_after = pcitem.getCount();
+                            }
+                            LogElfDwarfOut ledo = new LogElfDwarfOut();
+                            ledo.storeLogElfDwarfOut(pc, item, item_count_before,
+                                    item_count_after, count);
+                        }
 					} else {
 						pc.sendPackets(new S_ServerMessage(337, "$767"));
 						break;
